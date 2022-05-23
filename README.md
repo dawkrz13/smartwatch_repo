@@ -5,5 +5,5 @@ Following tools are needed to build the project:
 
 To build use these commands:
 
-*cmake -B build -G "Ninja"*
-*cmake --build build -t all*
+>*cmake -B build -G "Ninja"* <br><br>
+>*cmake --build build -t all*
