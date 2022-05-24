@@ -3,7 +3,10 @@ Following tools are needed to build the project:
 * **CMake.**
 * **Ninja.**
 
-To build use these commands:
+To build the project use following commands*:
 
->*cmake -B build -G "Ninja"* <br><br>
->*cmake --build build -t all*
+>rm -r build/\* <br><br>
+>cmake -DBUILD_TARGET=**target** -B build -G "Ninja" <br><br>
+>cmake --build build -t all
+
+\*replace **target** with *arm* or *x86*
