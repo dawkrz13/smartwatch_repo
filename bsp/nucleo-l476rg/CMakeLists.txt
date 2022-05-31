@@ -2,6 +2,7 @@ add_library(bsp
     src/bsp.cpp
     src/bsp_led.cpp
     src/bsp_clock.cpp
+    src/bsp_com.cpp
 )
 
 add_subdirectory(CubeMX)
