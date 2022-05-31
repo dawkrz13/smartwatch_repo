@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.23.0-rc3)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_subdirectory(bsp/bsp_interface)
 
 if(BUILD_TARGET STREQUAL arm)

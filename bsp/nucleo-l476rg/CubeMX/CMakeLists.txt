@@ -25,6 +25,8 @@ add_library(stm32_hal_obj OBJECT
     Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
     Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
     Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
+    Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
+    Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
     Core/Src/system_stm32l4xx.c
     startup_stm32l476xx.s
 )
