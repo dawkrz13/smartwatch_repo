@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.23.0-rc3)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_subdirectory(bsp/bsp_interface)
+#set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf")
 
 if(BUILD_TARGET STREQUAL arm)
 
@@ -26,5 +25,9 @@ else()
 
 endif()
 
+add_subdirectory(bsp/bsp_interface)
+add_subdirectory(sensors/sensor_interface)
+add_subdirectory(sensors/max30100)
+
 add_executable(Smartwatch_app main.cpp)
-target_link_libraries(Smartwatch_app bsp)
+target_link_libraries(Smartwatch_app bsp max30100)
