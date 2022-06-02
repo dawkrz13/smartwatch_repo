@@ -1,4 +1,6 @@
 #include "bsp.hpp"
+#include "max30100.hpp"
+#include "sensor_interface.hpp"
 
 #include <cstdio>
 
@@ -11,6 +13,10 @@ int main()
     bsp::init();
 
     bsp::write("Smartwatch App v1.0\r\n");
+
+    smartwatch::sensor::MAX30100 heart_rate_sensor;
+    bsp::write("Here\r\n");
+/*
     while(true)
     {
         char c;
@@ -23,5 +29,9 @@ int main()
         bsp::toggle_led();
         bsp::delay(500ms);
     }
+*/
+    while(true)
+    {
 
+    }
 }
