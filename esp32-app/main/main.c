@@ -5,9 +5,12 @@
 #include "driver/gpio.h"
 #include "sdkconfig.h"
 #include "esp_log.h"
+#include "soc/uart_reg.h"
 
-#define UART_USED_NUM UART_NUM_2
+#define TEST_VERSION
+#define UART_USED_NUM UART_NUM_0
 #define BUF_SIZE (1024)
+#define LED_BUILTIN GPIO_NUM_2
 
 // Use only core 1
 #if CONFIG_FREERTOS_UNICORE
@@ -22,20 +25,45 @@ static TaskHandle_t bluetooth_task = NULL;
 static TaskHandle_t data_parse_task = NULL;
 static const char *TAG = "uart_events";
 
+uint8_t rxbuf[BUF_SIZE/4];
 
 static void IRAM_ATTR uart_intr_handle(void *arg)
 {
-  
+#ifdef TEST_VERSION
+    int level;
+#endif
+    uint16_t rx_fifo_len;
+
+    // read data length in UART buffer 
+    ESP_ERROR_CHECK(uart_get_buffered_data_len(UART_USED_NUM, (size_t *)&rx_fifo_len));
+    // read data from UART buffer
+    rx_fifo_len = uart_read_bytes(UART_USED_NUM, rxbuf, rx_fifo_len, 100);
+    // clear interrupt status
+    uart_clear_intr_status(UART_USED_NUM, UART_RXFIFO_FULL_INT_CLR | UART_RXFIFO_TOUT_INT_CLR);
+
+#ifdef TEST_VERSION
+    level = gpio_get_level(LED_BUILTIN);    
+    level = ((level != 0) ? 0 : 1);
+    gpio_set_level(LED_BUILTIN, (uint32_t)level);
+#endif
+
+
 }
 
 void send_data_BT(void * parameter)
 {
-
+    while (1)
+    {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 }
 
 void parse_uart_data(void * parameter)
 {
-    
+    while (1)
+    {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 }
 
 void configure_serial_port()
@@ -75,6 +103,14 @@ void app_main(void)
 {   
     // Configure Serial
     configure_serial_port();
+
+#ifdef TEST_VERSION
+    gpio_pad_select_gpio(LED_BUILTIN);
+    /* Set the GPIO as a push/pull output */
+    gpio_set_direction(LED_BUILTIN, GPIO_MODE_OUTPUT);
+
+    gpio_set_level(LED_BUILTIN, 0x00);
+#endif
 
     // Create semaphore before it is used (in task or ISR)
     sem_new_uart_data = xSemaphoreCreateBinary();
