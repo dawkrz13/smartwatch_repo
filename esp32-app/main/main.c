@@ -23,6 +23,7 @@ static intr_handle_t handle_console;
 static SemaphoreHandle_t sem_new_uart_data = NULL;
 static TaskHandle_t bluetooth_task = NULL;
 static TaskHandle_t data_parse_task = NULL;
+static QueueHandle_t uart_data_queue = NULL;
 static const char *TAG = "uart_events";
 
 uint8_t rxbuf[BUF_SIZE/4];
@@ -31,8 +32,15 @@ static void IRAM_ATTR uart_intr_handle(void *arg)
 {
 #ifdef TEST_VERSION
     int level;
-#endif
+
+    level = gpio_get_level(LED_BUILTIN);    
+    level = ((level != 0) ? 0 : 1);
+    gpio_set_level(LED_BUILTIN, (uint32_t)level);
+    uart_flush(UART_USED_NUM);
+#else
     uint16_t rx_fifo_len;
+    static BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    int i = 0;
 
     // read data length in UART buffer 
     ESP_ERROR_CHECK(uart_get_buffered_data_len(UART_USED_NUM, (size_t *)&rx_fifo_len));
@@ -41,13 +49,19 @@ static void IRAM_ATTR uart_intr_handle(void *arg)
     // clear interrupt status
     uart_clear_intr_status(UART_USED_NUM, UART_RXFIFO_FULL_INT_CLR | UART_RXFIFO_TOUT_INT_CLR);
 
-#ifdef TEST_VERSION
-    level = gpio_get_level(LED_BUILTIN);    
-    level = ((level != 0) ? 0 : 1);
-    gpio_set_level(LED_BUILTIN, (uint32_t)level);
+    xSemaphoreGiveFromISR(sem_new_uart_data, &xHigherPriorityTaskWoken);
+    
+    while (rx_fifo_len--)
+    {
+        xQueueSendToBackFromISR(uart_data_queue, rxbuf[i], &xHigherPriorityTaskWoken);
+        i++;
+    }    
+
+    if (xHigherPriorityTaskWoken)
+    {
+        portYIELD_FROM_ISR();
+    }
 #endif
-
-
 }
 
 void send_data_BT(void * parameter)
@@ -62,11 +76,11 @@ void parse_uart_data(void * parameter)
 {
     while (1)
     {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        xSemaphoreTake(sem_new_uart_data, portMAX_DELAY);
     }
 }
 
-void configure_serial_port()
+void configure_serial_port(void)
 {
     uart_config_t uart_config = {
         .baud_rate = 115200,
@@ -122,7 +136,10 @@ void app_main(void)
     }
 
     // We want the done new serial data semaphore to initialize to 1
-    xSemaphoreGive(sem_new_uart_data);
+    // xSemaphoreGive(sem_new_uart_data);
+    xSemaphoreTake(sem_new_uart_data, 0);   
+
+    uart_data_queue = xQueueCreate(BUF_SIZE/2);
 
     xTaskCreatePinnedToCore(send_data_BT,
                             "Send data to Qt app via BT",
@@ -142,7 +159,7 @@ void app_main(void)
 
     vTaskDelete(NULL);
 
-    while(1)
+    while (1)
     {
         // program should never get here
     }
