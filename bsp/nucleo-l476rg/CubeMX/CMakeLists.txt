@@ -37,6 +37,7 @@ add_library(stm32_hal_obj OBJECT
     Core/Src/system_stm32l4xx.c
     startup_stm32l476xx.s
     ${max30100_driver_lib_SOURCE_DIR}/max30100_for_stm32_hal.c
+    ${max30100_driver_lib_SOURCE_DIR}/pulse_detector.c
 )
 
 target_include_directories(stm32_hal_obj
