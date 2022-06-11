@@ -15,10 +15,10 @@ int main()
     bsp::write("Smartwatch App v1.0\r\n");
 
     smartwatch::sensor::MAX30100 heart_rate_sensor;
-    bsp::write("Here\r\n");
-/*
+
     while(true)
     {
+        /*
         char c;
         auto user_command = bsp::read({&c, 1});
         if(!user_command.empty())
@@ -28,10 +28,7 @@ int main()
         }
         bsp::toggle_led();
         bsp::delay(500ms);
+        */
     }
-*/
-    while(true)
-    {
 
-    }
 }
