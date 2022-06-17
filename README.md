@@ -15,14 +15,26 @@ Project path: `bsp\nucleo-l476rg\CubeMX\nucleo-l476rg.ioc`
 ```c
 MAX30100_InterruptHandler();
 ```
-* To build the project use following commands*:
+* To build the project use following commands:
 ```
-cmake -DBUILD_TARGET=target -B build -G "Ninja"
+cmake -DBUILD_TARGET=arm -B build -G "Ninja"
 ```
 ```
 cmake --build build -t all
 ```
-\*replace **target** with *arm* or *x86*
+* To run tests use following commands:
+```
+cd test
+```
+```
+cmake -B build -G "Ninja"
+```
+```
+cmake --build build -t all
+```
+```
+.\build\smartwatch_tests.exe
+```
 
 **MAX30100 library repo:**
 [MAX30100 library](https://github.com/dawkrz13/MAX30100_for_STM32_HAL)

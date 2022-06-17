@@ -1,9 +1,9 @@
-function bpm = pulse_detector()
+function avg_bpm = pulse_detector()
 
     bpm = [];
-    data = readtable("hr.xlsx");
-    y = data.Var2(1400:3900);
-    
+    data = readtable("data/hr.xlsx");
+    y = data.Var1;
+
     hr_threshold = 700;
     samples_per_second = 100;
     seconds_per_minute = 60;
@@ -18,7 +18,13 @@ function bpm = pulse_detector()
            peak_detected = 1;
        elseif (current_sample - previous_sample) > hr_threshold && peak_detected == 1
            num_seconds_between_peaks = sample_counter / samples_per_second;
-           bpm(end+1) = round(seconds_per_minute / num_seconds_between_peaks);
+           bpm_tmp = round(seconds_per_minute / num_seconds_between_peaks);
+           if(bpm_tmp < 40 || bpm_tmp > 160)
+               previous_sample = 0;
+               sample_counter = 0;
+           else
+               bpm(end+1) = bpm_tmp;
+           end
            sample_counter = 0;
        end
        if peak_detected == 1
@@ -26,5 +32,5 @@ function bpm = pulse_detector()
        end
        previous_sample = current_sample;
     end
-
+    avg_bpm = mean(bpm);
 end
