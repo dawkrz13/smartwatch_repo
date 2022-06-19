@@ -35,6 +35,11 @@ cmake --build build -t all
 ```
 .\build\smartwatch_tests.exe
 ```
+* To build esp32 app use idf.py. Go to the project directory and run:
+```
+idf.py build
+```
+
 
 **MAX30100 library repo:**
 [MAX30100 library](https://github.com/dawkrz13/MAX30100_for_STM32_HAL)
