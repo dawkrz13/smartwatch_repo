@@ -5,7 +5,7 @@ extern "C"
 
 extern "C" void SystemClock_Config(void);
 extern "C" void MX_GPIO_Init(void);
-extern "C" void MX_USART2_UART_Init(void);
+extern "C" void MX_USART1_UART_Init(void);
 extern "C" void MX_I2C2_Init(void);
 
 namespace smartwatch::bsp {
