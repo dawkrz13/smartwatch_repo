@@ -1,8 +1,45 @@
-So far, the following tools are needed to build the project:
-* **GNU Arm Embedded Toolchain.**
- - set up the path to the *bin* folder of the toolchain as an environmental variable,
-* **Make.**
- - one way is to install *MinGW*, launch *MinGw Installation Manager* and install *msys-base* and *msys-make* packages,
- - remember to set up the path to *bin* folder inside *msys* folder as an environmental variable,
+Following tools are needed to build the app:
+* GNU Arm Embedded Toolchain
+* CMake
+* Ninja
 
-To build the project enter the *discovery-f407g* or *nucleo-l476rg* folder and run `make` from the terminal.
+Follow these steps:
+
+* Generate STM32CubeMX project code.
+Project path: `bsp\nucleo-l476rg\CubeMX\nucleo-l476rg.ioc`
+* In `stm32f*xx_it.c` (interrupt service routines file), add:
+```c
+#include "max30100_for_stm32_hal.h"
+```
+* In the corresponding interrupt handler function - `EXTI2_IRQHandler()` - call the interrupt handler:
+```c
+MAX30100_InterruptHandler();
+```
+* To build the project use following commands:
+```
+cmake -DBUILD_TARGET=arm -B build -G "Ninja"
+```
+```
+cmake --build build -t all
+```
+* To run tests use following commands:
+```
+cd test
+```
+```
+cmake -B build -G "Ninja"
+```
+```
+cmake --build build -t all
+```
+```
+.\build\smartwatch_tests.exe
+```
+* To build esp32 app use idf.py. Go to the project directory and run:
+```
+idf.py build
+```
+
+
+**MAX30100 library repo:**
+[MAX30100 library](https://github.com/dawkrz13/MAX30100_for_STM32_HAL)
