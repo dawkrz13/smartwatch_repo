@@ -9,14 +9,14 @@ extern "C"
 #include "bsp.hpp"
 #include "max30100.hpp"
 
-extern "C" UART_HandleTypeDef huart1;
+extern "C" UART_HandleTypeDef huart2;
 extern "C" I2C_HandleTypeDef hi2c2;
 
 namespace smartwatch::sensor
 {
     void MAX30100::doInit()
     {
-        MAX30100_Init(&hi2c2, &huart1);
+        MAX30100_Init(&hi2c2, &huart2);
         MAX30100_SetSpO2SampleRate(MAX30100_SPO2SR_DEFAULT);
         MAX30100_SetLEDPulseWidth(MAX30100_LEDPW_DEFAULT);
         MAX30100_SetLEDCurrent(MAX30100_LEDCURRENT_DEFAULT, MAX30100_LEDCURRENT_DEFAULT);
