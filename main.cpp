@@ -18,6 +18,7 @@ int main()
 
     while(true)
     {
+        heart_rate_sensor.check_status();
         /*
         char c;
         auto user_command = bsp::read({&c, 1});

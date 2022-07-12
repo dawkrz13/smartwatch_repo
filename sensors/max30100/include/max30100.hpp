@@ -18,5 +18,7 @@ namespace smartwatch::sensor
             return doInit();
         }
         void doInit() override;
+
+        void check_status();
     };
 }

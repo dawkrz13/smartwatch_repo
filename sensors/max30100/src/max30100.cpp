@@ -11,6 +11,7 @@ extern "C"
 
 extern "C" UART_HandleTypeDef huart1;
 extern "C" I2C_HandleTypeDef hi2c2;
+//extern "C" PULSE_DETECTOR pd;
 
 namespace smartwatch::sensor
 {
@@ -22,5 +23,11 @@ namespace smartwatch::sensor
         MAX30100_SetLEDCurrent(MAX30100_LEDCURRENT_DEFAULT, MAX30100_LEDCURRENT_DEFAULT);
         MAX30100_SetMode(MAX30100_HRONLY_MODE);
         MAX30100_InterruptHandler();
+    }
+
+    void MAX30100::check_status()
+    {
+        if(pd.idx > 450)
+            run_pulse_detector(&huart2);
     }
 }
