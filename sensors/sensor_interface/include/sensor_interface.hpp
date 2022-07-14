@@ -14,5 +14,9 @@ namespace smartwatch::sensor
         private:
 
         virtual void doInit() = 0;
+
+        virtual bool check_status() = 0;
+
+        virtual void detect_pulse() = 0;
     };
 }
