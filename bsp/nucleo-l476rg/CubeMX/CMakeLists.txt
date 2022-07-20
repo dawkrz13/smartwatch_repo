@@ -2,6 +2,7 @@ include(FetchContent)
 
 FetchContent_Declare(max30100_driver_lib
     GIT_REPOSITORY  https://github.com/dawkrz13/MAX30100_for_STM32_HAL.git
+    GIT_TAG         origin/master
 )
 FetchContent_MakeAvailable(max30100_driver_lib)
 

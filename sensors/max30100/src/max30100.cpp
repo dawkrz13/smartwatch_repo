@@ -11,13 +11,14 @@ extern "C"
 
 extern "C" UART_HandleTypeDef huart1;
 extern "C" I2C_HandleTypeDef hi2c2;
+extern "C" PULSE_DETECTOR pd;
 
 namespace smartwatch::sensor
 {
     void MAX30100::doInit()
     {
         /* Setup MAX30100 */
-        MAX30100_Init(&hi2c2, &huart2);
+        MAX30100_Init(&hi2c2, &huart1);
         MAX30100_SetSpO2SampleRate(MAX30100_SPO2SR_DEFAULT);
         MAX30100_SetLEDPulseWidth(MAX30100_LEDPW_DEFAULT);
         MAX30100_SetLEDCurrent(MAX30100_LEDCURRENT_DEFAULT, MAX30100_LEDCURRENT_DEFAULT);
@@ -33,6 +34,6 @@ namespace smartwatch::sensor
 
     void MAX30100::detect_pulse()
     {
-        run_pulse_detector(&huart2);
+        run_pulse_detector(&huart1);
     }
 }
