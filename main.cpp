@@ -14,21 +14,17 @@ int main()
 
     bsp::write("Smartwatch App v1.0\r\n");
 
+    /* Initialize and configure MAX30100 heart rate sensor - refer to the constructor*/
     smartwatch::sensor::MAX30100 heart_rate_sensor;
 
     while(true)
     {
-        /*
-        char c;
-        auto user_command = bsp::read({&c, 1});
-        if(!user_command.empty())
+        /* Check sensor state - when IR data buffer is almost full, run pulse detection algorithm */
+        if(heart_rate_sensor.check_status())
         {
-            bsp::write(user_command);
-            bsp::write("\r\n");
+            /* Pulse detection results are sent to ESP32 over configured USART */
+            heart_rate_sensor.detect_pulse();
         }
-        bsp::toggle_led();
-        bsp::delay(500ms);
-        */
     }
 
 }

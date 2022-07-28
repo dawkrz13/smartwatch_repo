@@ -18,5 +18,9 @@ namespace smartwatch::sensor
             return doInit();
         }
         void doInit() override;
+
+        bool check_status() override;
+
+        void detect_pulse() override;
     };
 }
