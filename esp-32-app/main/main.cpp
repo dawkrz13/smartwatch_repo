@@ -55,11 +55,11 @@ BLEDescriptor heartRateNotificationDescriptor(BLEUUID((uint16_t)0x2902));
 BLEDescriptor sensorPositionDescriptor(BLEUUID((uint16_t)0x2901));
 
 const uint8_t notificationsEnabled = NOTIFICATIONS_ON;
-byte sensorPositionVal[] = {FINGER};
+byte sensorPositionVal[] = {WRIST};
 #ifdef ENERGY_EXP_SUPPORTED
-byte heart[8] = { 0b00001110, 0, 0, 0, 0, 0, 0, 0};
+byte heart[8] = { 0b00001000, 0, 0, 0, 0, 0, 0, 0};
 #else
-byte heart[8] = { 0b00000110, 0, 0, 0, 0, 0, 0, 0};
+byte heart[8] = { 0b00000000, 0, 0, 0, 0, 0, 0, 0}; //HRM Value is UINT8, Sensor Contact feature is not supported 
 #endif
 
 bool _BLEClientConnected = false;
@@ -143,7 +143,7 @@ class uartTask: public Task {
           #ifdef TEST_VERSION
             ESP_LOGI(TAG, "UART DATA EVENT");
             ESP_LOGI(TAG, "UART DATA SIZE: %d", event.size);
-            uart_write_bytes(UART_USED_NUM, (const uint8_t *)data_in, event.size);
+            // uart_write_bytes(UART_USED_NUM, (const uint8_t *)data_in, event.size);
           #endif
             break;
 
